@@ -215,13 +215,11 @@ public class ConnectionsFragment extends Fragment implements ConnectionsListener
 
         autoScroll = true;
         showFabDown(false);
-
         mFabDown.setOnClickListener(v -> scrollToBottom());
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-            //public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int state) {
                 recheckScroll();
             }
         });
