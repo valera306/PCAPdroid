@@ -102,6 +102,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -142,8 +143,6 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -1788,5 +1787,22 @@ public class Utils {
         } catch (Exception ignored) {
             return false;
         }
+    }
+
+    public static boolean isPcapng(Context ctx, Uri uri) {
+        try (InputStream in_stream = ctx.getContentResolver().openInputStream(uri)) {
+            try (DataInputStream data_in = new DataInputStream(in_stream)) {
+                int block_type = data_in.readInt();
+                data_in.skipBytes(4);
+                int magic = data_in.readInt();
+
+                return ((block_type == 0x0A0D0D0A) &&
+                        ((magic == 0x1a2b3c4d) || (magic == 0x4d3c2b1a)));
+            }
+        } catch (IOException e) {
+            Log.w(TAG, "Reading " + uri + " failed: " + e);
+        }
+
+        return false;
     }
 }
