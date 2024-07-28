@@ -18,7 +18,7 @@ jobs:
         
     - run: ./gradlew test
     #- run: ./gradlew assembleDebug -PdoNotStrip
-    - run: ./gradlew assembleRelease
+    - run: ./gradlew assembleRelease -PdoNotStrip
 
     - name: Upload APK
   uses: actions/upload-artifact@v3
